@@ -1,0 +1,38 @@
+spring:
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:ingot-db-mysql}:${MYSQL_PORT:3306}/ingot_uc_db?useUnicode=true&characterEncoding=UTF8&useSSL=false
+
+mybatis:
+  type-aliases-package: com.ingot.uc.model.domain
+  mapper-locations: classpath*:mapper/*.xml,classpath*:sdk/mapper/*.xml
+
+security:
+  oauth2:
+    client:
+      client-id: ${spring.application.name}
+      client-secret: V3T3545EGUDjNFbmON6P+Jd4PxH/MwyCt62NZj8Yx/s=
+      access-token-uri: http://ingot-auth-center:8050/oauth/token
+      user-authorization-uri: http://ingot-auth-center:8050/oauth/authorize
+    resource:
+      id: ingot-resource-uc
+      user-info-uri: http://ingot-auth-center:8050/user
+      prefer-token-info: false
+      jwt:
+        key-uri: http://ingot-auth-center:8050/oauth/token_key
+
+ingot:
+  application:
+    dataCenterId: 1
+    machineId: 0
+  oauth2:
+    resource:
+      permit:
+        - /token
+        - /test/auth

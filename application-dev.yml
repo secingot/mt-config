@@ -1,0 +1,71 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    remote-ip-header: x-forwarded-for
+  use-forward-headers: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:ingot-mq-rabbit}
+    port: ${RABBIT_MQ_PORT:5672}
+  redis:
+    database: 1
+    host: ${REDIS_HOST:ingot-db-redis}
+    port: ${REDIS_PORT:6379}
+    jedis:
+      pool:
+        max-active: 20
+
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+  MaxAutoRetries: 0 ##对当前实例的重试次数
+  MaxAutoRetriesNextServer: 1 ##切换实例的重试次数
+  OkToRetryOnAllOperations: false ##对所有请求都进行重试
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000 ##并发执行的最大线程数，默认10
+      maxQueueSize: 1000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+logging:
+  level:
+    #    root: info
+    #    ## 这里设置为info，是因为如果不设置，debug时会不断打印mq日志。
+    #    org.springframework.integration.endpoint.SourcePollingChannelAdapter: info
+    org.springframework.security: DEBUG
+
+ingot:
+  oauth2:
+    client:
+      id: ${security.oauth2.resource.id}
+      accessTokenUrl: ${security.oauth2.client.access-token-uri}
+      clientId: ${security.oauth2.client.client-id}
+      clientSecret: ${security.oauth2.client.client-secret}
+      clientAuthenticationScheme: header

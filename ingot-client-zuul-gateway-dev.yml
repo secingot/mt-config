@@ -1,0 +1,85 @@
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+zuul:
+  add-host-header: true
+  add-proxy-headers: true
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  force-original-query-string-encoding: true
+  routes:
+    ac-route:
+      sensitiveHeaders:
+      path: /ac/**
+      service-id: ingot-client-ac
+      ribbon:
+        eager-load:
+          enabled: true
+        MaxAutoRetries: 1
+        MaxAutoRetriesNextServer: 2
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 20000
+        ReadTimeout: 20000
+    uc-route:
+      sensitiveHeaders:
+      path: /uc/**
+      service-id: ingot-client-uc
+      ribbon:
+        eager-load:
+          enabled: true
+        MaxAutoRetries: 1
+        MaxAutoRetriesNextServer: 2
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 20000
+        ReadTimeout: 20000
+
+
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+#请求和响应GZIP压缩支持
+feign:
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+
+security:
+  oauth2:
+    client:
+      client-id: ${spring.application.name}
+      client-secret: yd31PYIr1ZT1Oi6bh/U4oZD1+kuUSk3LnGsUKu6LQHg=
+      access-token-uri: http://ingot-auth-center:8050/oauth/token
+      user-authorization-uri: http://ingot-auth-center:8050/oauth/authorize
+    resource:
+      id: ingot-resource-zuul-gateway
+      user-info-uri: http://ingot-auth-center:8050/user
+      prefer-token-info: false
+      jwt:
+        key-uri: http://ingot-auth-center:8050/oauth/token_key
+
+ingot:
+  application:
+    dataCenterId: 2
+    machineId: 0
+  oauth2:
+    resource:
+      permit:
+        - /ac/auth/user/refreshToken
+        - /ac/auth/code/**
+        - /ac/auth/login
+        - /ac/auth/admin/login

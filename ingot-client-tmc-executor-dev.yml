@@ -1,0 +1,31 @@
+spring:
+  jackson:
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+    static-path-pattern: /static/**
+
+security:
+  oauth2:
+    client:
+      client-id: ${spring.application.name}
+      client-secret: /MmJWO4qpgDUfD+BzWtnHpdKYMb4S6d2LzzjXwTwCG8=
+      access-token-uri: http://ingot-auth-center:8050/oauth/token
+      user-authorization-uri: http://ingot-auth-center:8050/oauth/authorize
+    resource:
+      id: ingot-resource-tmc-executor
+      user-info-uri: http://ingot-auth-center:8050/user
+      prefer-token-info: false
+      jwt:
+        key-uri: http://ingot-auth-center:8050/oauth/token_key
+
+ingot:
+  oauth2:
+    resource:
+      permit:
+        - /**
+      userPermit:
+        - /**
