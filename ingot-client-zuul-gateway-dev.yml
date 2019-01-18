@@ -37,6 +37,18 @@ zuul:
         OkToRetryOnAllOperations: false
         ConnectTimeout: 20000
         ReadTimeout: 20000
+    mtmc-route:
+      sensitiveHeaders:
+      path: /mtmc/**
+      service-id: mt-client-business
+      ribbon:
+        eager-load:
+          enabled: true
+        MaxAutoRetries: 1
+        MaxAutoRetriesNextServer: 2
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 20000
+        ReadTimeout: 20000
 
 
 management:
