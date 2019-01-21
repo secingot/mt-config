@@ -95,3 +95,5 @@ ingot:
         - /ac/auth/code/**
         - /ac/auth/login
         - /ac/auth/admin/login
+        - /mtmc/wrap/login
+        - /mtmc/wrap/refreshToken
